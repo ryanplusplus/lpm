@@ -1,3 +1,5 @@
+local lpm_version = '0.1'
+
 local utils = require 'lpm-utils'
 
 local command = arg[1]
@@ -15,7 +17,7 @@ if not utils.file_exists(lua) then
   os.execute('lenv install ' .. version)
 end
 
-({
+(setmetatable({
   install = function()
     os.execute('mkdir -p lua_modules')
     utils.create_rockspec(package, 'lua_modules/package-0-0.rockspec')
@@ -33,5 +35,26 @@ end
       [[export LUA_CPATH='./lua_modules/lib/lua/]] .. short_version .. [[/?.so;./lua_modules/lib/lua/]] .. short_version .. [[/loadall.so;./?.so;';]] ..
       table.concat(args, ' ')
     os.execute(cmd)
+  end,
+
+  version = function()
+    print(lpm_version)
+  end,
+
+  help = function()
+    print([[
+
+lpm ]] .. lpm_version .. [[
+
+
+lpm install
+  Install Lua and all dependencies for the project in the current directory.
+
+lpm clean
+  Uninstall all dependencies for the project in the current directory.
+
+lpm run
+  Run a commands in the context of the project in the current directory.
+]])
   end
-})[command](args)
+}, { __index = function(t) return t.help end }))[command](args)
