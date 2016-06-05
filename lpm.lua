@@ -20,8 +20,8 @@ end
 (setmetatable({
   install = function()
     os.execute('mkdir -p lua_modules')
-    utils.create_rockspec(package, 'lua_modules/package-0-0.rockspec')
-    os.execute('export PATH=' .. bin .. ':$PATH; ' .. luarocks .. ' install lua_modules/package-0-0.rockspec --tree=./lua_modules')
+    utils.create_rockspec(package, 'lua_modules/package-lpm-0.rockspec')
+    os.execute('export PATH=' .. bin .. ':$PATH; ' .. luarocks .. ' install lua_modules/package-lpm-0.rockspec --tree=./lua_modules')
   end,
 
   clean = function()

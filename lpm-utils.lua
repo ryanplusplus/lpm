@@ -41,7 +41,7 @@ local function create_rockspec(package, destination)
 
   local s = [[
 package = 'package'
-version = '0-0'
+version = 'lpm-0'
 source = {
   url = '.'
 }
