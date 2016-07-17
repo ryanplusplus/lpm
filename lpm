@@ -6,4 +6,4 @@ if [ ! -f $LUA ]; then
   lenv install 5.3.2
 fi
 
-$LUA lpm.lua "$@"
+$LUA `dirname $0`/lpm.lua "$@"
