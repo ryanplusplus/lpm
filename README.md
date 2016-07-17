@@ -1,4 +1,4 @@
-# lpm-test
+# lpm
 Fiddling around with Lua application management in an `npm`-style. Goals are to (easily) maintain locally-scoped dependencies and automatically select the correct Lua version. Requires [`lenv`](https://github.com/mah0x211/lenv) to be installed and on the path.
 
 ## Installation
