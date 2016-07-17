@@ -1,3 +1,5 @@
+package.path = debug.getinfo(1, 'S').source:match([[^@?(.*[\/])[^\/]-$]]) .. '?.lua;' .. package.path
+
 local lpm_version = '0.1'
 
 local utils = require 'lpm-utils'
