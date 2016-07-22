@@ -16,6 +16,7 @@ local lua = bin .. '/lua'
 local luarocks = bin .. '/luarocks'
 
 if not utils.file_exists(lua) then
+  os.execute('lenv fetch')
   os.execute('lenv install ' .. version)
 end
 
