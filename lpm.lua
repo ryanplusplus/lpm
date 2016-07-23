@@ -40,6 +40,13 @@ local exec = function(args, env)
   os.execute(cmd)
 end
 
+local run = function(args)
+  with_package(function(args, env)
+    args[1] = env.package.scripts[args[1]]
+    exec(args, env)
+  end)(args)
+end
+
 (setmetatable({
   install = with_package(function(args, env)
     os.execute('mkdir -p lua_modules')
@@ -53,11 +60,10 @@ end
 
   exec = with_package(exec),
 
-  run = function(args)
-    with_package(function(args, env)
-      args[1] = env.package.scripts[args[1]]
-      exec(args, env)
-    end)(args)
+  run = run,
+
+  test = function()
+    run({ 'test' })
   end,
 
   version = function()

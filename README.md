@@ -33,6 +33,13 @@ Run scripts defined in [`package.lua`](#package-definition) in project context.
 lpm run <script name> [arguments]
 ```
 
+### Test
+Alias for `lpm run test`
+
+```shell
+lpm test
+```
+
 ## Package Definition
 The package file (`package.lua`) includes the project name, Lua version, project scripts, and a list of Luarocks dependencies.
 
