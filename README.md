@@ -1,5 +1,5 @@
 # lpm
-Fiddling around with Lua application management in an `npm`-style. Goals are to (easily) maintain locally-scoped dependencies and automatically select the correct Lua version. Requires [`lenv`](https://github.com/mah0x211/lenv) to be installed and on the path.
+Fiddling around with Lua application management in an `npm` style. Goals are to (easily) maintain locally-scoped dependencies and automatically select the correct Lua version. Requires [`lenv`](https://github.com/mah0x211/lenv) to be installed and on the path.
 
 ## Installation
 To install, copy `lpm`, `lpm.lua`, and `lpm-utils.lua` to your favorite folder and add that folder to your path.
