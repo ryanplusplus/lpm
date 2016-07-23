@@ -32,11 +32,17 @@ local function file_exists(filename)
   return exists
 end
 
-local function create_rockspec(package, destination)
+local function create_rockspec(package, destination, production)
   local quoted_dependencies = {}
 
   for _, dependency in ipairs(package.dependencies) do
     table.insert(quoted_dependencies, "'" .. dependency .. "'")
+  end
+
+  if not production then
+    for _, dependency in ipairs(package.dev_dependencies) do
+      table.insert(quoted_dependencies, "'" .. dependency .. "'")
+    end
   end
 
   local s = [[

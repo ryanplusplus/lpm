@@ -32,9 +32,9 @@ local function with_package(thunk)
 end
 
 (setmetatable({
-  install = with_package(function(_, env)
+  install = with_package(function(args, env)
     os.execute('mkdir -p lua_modules')
-    utils.create_rockspec(env.package, 'lua_modules/package-lpm-0.rockspec')
+    utils.create_rockspec(env.package, 'lua_modules/package-lpm-0.rockspec', args[1] == '--production')
     os.execute('export PATH=' .. env.bin .. ':$PATH; ' .. env.luarocks .. ' install lua_modules/package-lpm-0.rockspec --tree=./lua_modules')
   end),
 
