@@ -5,35 +5,35 @@ Fiddling around with Lua application management in an `npm`-style. Goals are to 
 To install, copy `lpm`, `lpm.lua`, and `lpm-utils.lua` to your favorite folder and add that folder to your path.
 
 ## Commands
-### Install
+### install
 Install the version of Lua, the dependencies, and the dev dependencies listed in [`package.lua`](#package-definition). To omit dev dependencies, pass `--production`. Installs all dependencies in `./lua_modules`.
 
 ```shell
 lpm install [--production]
 ```
 
-### Clean
+### clean
 Remove all installed dependencies by deleting `./lua_modules`.
 
 ```shell
 lpm clean
 ```
 
-### Exec
+### exec
 Execute commands in the project context.
 
 ```shell
 lpm exec <command> [arguments]
 ```
 
-### Run
+### run
 Run scripts defined in [`package.lua`](#package-definition) in project context.
 
 ```shell
 lpm run <script name> [arguments]
 ```
 
-### Test
+### test
 Alias for `lpm run test`
 
 ```shell
