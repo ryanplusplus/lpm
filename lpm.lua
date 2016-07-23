@@ -31,6 +31,15 @@ local function with_package(thunk)
   end
 end
 
+local exec = function(args, env)
+  local cmd =
+    [[export PATH="]] .. env.bin .. [[:./lua_modules/bin:$PATH";]] ..
+    [[export LUA_PATH='./?.lua;./lua_modules/share/lua/]] .. env.short_version .. [[/?.lua;./lua_modules/share/lua/]] .. env.short_version .. [[/?/init.lua';]] ..
+    [[export LUA_CPATH='./?.so;./lua_modules/lib/lua/]] .. env.short_version .. [[/?.so;./lua_modules/lib/lua/]] .. env.short_version .. [[/loadall.so;./?.so;';]] ..
+    table.concat(args, ' ')
+  os.execute(cmd)
+end
+
 (setmetatable({
   install = with_package(function(args, env)
     os.execute('mkdir -p lua_modules')
@@ -42,14 +51,14 @@ end
     os.execute('rm -rf lua_modules')
   end,
 
-  run = with_package(function(args, env)
-    local cmd =
-      [[export PATH="]] .. env.bin .. [[:./lua_modules/bin:$PATH";]] ..
-      [[export LUA_PATH='./lua_modules/share/lua/]] .. env.short_version .. [[/?.lua;./lua_modules/share/lua/]] .. env.short_version .. [[/?/init.lua';]] ..
-      [[export LUA_CPATH='./lua_modules/lib/lua/]] .. env.short_version .. [[/?.so;./lua_modules/lib/lua/]] .. env.short_version .. [[/loadall.so;./?.so;';]] ..
-      table.concat(args, ' ')
-    os.execute(cmd)
-  end),
+  exec = with_package(exec),
+
+  run = function(args)
+    with_package(function(args, env)
+      args[1] = env.package.scripts[args[1]]
+      exec(args, env)
+    end)(args)
+  end,
 
   version = function()
     print(lpm_version)
@@ -67,8 +76,11 @@ lpm install
 lpm clean
   Uninstall all dependencies for the project in the current directory.
 
+lpm exec
+  Execute commands in the context of the project in the current directory.
+
 lpm run
-  Run a commands in the context of the project in the current directory.
+  Run scripts in the context of the project in the current directory.
 ]])
   end
 }, { __index = function(t) return t.help end }))[command](args)

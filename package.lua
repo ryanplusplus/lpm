@@ -5,6 +5,10 @@ dependencies = {
   'chain == 1.0-1'
 }
 dev_dependencies = {
-  'mach >= 3.0-1',
+  'mach >= 4.4-1',
   'busted >= 2.0.rc11-0'
+}
+scripts = {
+  test = 'busted',
+  demo = [[lua -e "require 'src.test'(print)"]]
 }

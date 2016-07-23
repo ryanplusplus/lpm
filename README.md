@@ -6,10 +6,10 @@ To install, copy `lpm`, `lpm.lua`, and `lpm-utils.lua` to your favorite folder a
 
 ## Commands
 ### Install
-Install the version of Lua and the dependencies listed in [`package.lua`](#package-definition). Installs all dependencies in `./lua_modules`.
+Install the version of Lua, the dependencies, and the dev dependencies listed in [`package.lua`](#package-definition). To omit dev dependencies, pass `--production`. Installs all dependencies in `./lua_modules`.
 
 ```shell
-lpm install
+lpm install [--production]
 ```
 
 ### Clean
@@ -19,23 +19,36 @@ Remove all installed dependencies by deleting `./lua_modules`.
 lpm clean
 ```
 
-### Run
-Run commands in the project context.
+### Exec
+Execute commands in the project context.
 
 ```shell
-lpm run <command>
+lpm exec <command> [arguments]
+```
+
+### Run
+Run scripts defined in [`package.lua`](#package-definition) in project context.
+
+```shell
+lpm run <script name> [arguments]
 ```
 
 ## Package Definition
-The package file (`package.lua`) includes the project name, Lua version, and a list of Luarocks dependencies.
+The package file (`package.lua`) includes the project name, Lua version, project scripts, and a list of Luarocks dependencies.
 
 ```
 name = 'cool-test-project'
 lua = '5.3.2'
 dependencies = {
   'lua == 5.3',
-  'mach >= 3.0-1',
+  'chain >= 1.0-1'
+}
+dev_dependencies = {
+  'mach >= 4.4-1',
   'busted >= 2.0.rc11-0'
+}
+scripts = {
+  test = 'busted'
 }
 ```
 
@@ -43,5 +56,5 @@ dependencies = {
 Install and run automated tests for the sample project with:
 
 ```shell
-./lpm install; ./lpm run busted
+./lpm install; ./lpm run test
 ```
