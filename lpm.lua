@@ -7,38 +7,49 @@ local utils = require 'lpm-utils'
 local command = arg[1]
 local args = (function(command, ...) return table.pack(...) end)(table.unpack(arg))
 
-local package = utils.file_to_table('package.lua')
-local home = utils.exec('echo $HOME'):match('([^\n]*)')
-local version = package.lua
-local short_version = version:match('(%d.%d)')
-local bin = home .. '/.lenv/lua/' .. version .. '/bin'
-local lua = bin .. '/lua'
-local luarocks = bin .. '/luarocks'
+local function with_package(thunk)
+  return function(args)
+    local package = utils.file_to_table('package.lua')
+    local home = utils.exec('echo $HOME'):match('([^\n]*)')
+    local version = package.lua
+    local short_version = version:match('(%d.%d)')
+    local bin = home .. '/.lenv/lua/' .. version .. '/bin'
+    local lua = bin .. '/lua'
+    local luarocks = bin .. '/luarocks'
 
-if not utils.file_exists(lua) then
-  os.execute('lenv fetch')
-  os.execute('lenv install ' .. version)
+    if not utils.file_exists(lua) then
+      os.execute('lenv fetch')
+      os.execute('lenv install ' .. version)
+    end
+
+    thunk(args, {
+      bin = bin,
+      luarocks = luarocks,
+      package = package,
+      short_version = short_version
+    })
+  end
 end
 
 (setmetatable({
-  install = function()
+  install = with_package(function(_, env)
     os.execute('mkdir -p lua_modules')
-    utils.create_rockspec(package, 'lua_modules/package-lpm-0.rockspec')
-    os.execute('export PATH=' .. bin .. ':$PATH; ' .. luarocks .. ' install lua_modules/package-lpm-0.rockspec --tree=./lua_modules')
-  end,
+    utils.create_rockspec(env.package, 'lua_modules/package-lpm-0.rockspec')
+    os.execute('export PATH=' .. env.bin .. ':$PATH; ' .. env.luarocks .. ' install lua_modules/package-lpm-0.rockspec --tree=./lua_modules')
+  end),
 
   clean = function()
     os.execute('rm -rf lua_modules')
   end,
 
-  run = function(args)
+  run = with_package(function(args, env)
     local cmd =
-      [[export PATH="]] .. bin .. [[:./lua_modules/bin:$PATH";]] ..
-      [[export LUA_PATH='./lua_modules/share/lua/]] .. short_version .. [[/?.lua;./lua_modules/share/lua/]] .. short_version .. [[/?/init.lua';]] ..
-      [[export LUA_CPATH='./lua_modules/lib/lua/]] .. short_version .. [[/?.so;./lua_modules/lib/lua/]] .. short_version .. [[/loadall.so;./?.so;';]] ..
+      [[export PATH="]] .. env.bin .. [[:./lua_modules/bin:$PATH";]] ..
+      [[export LUA_PATH='./lua_modules/share/lua/]] .. env.short_version .. [[/?.lua;./lua_modules/share/lua/]] .. env.short_version .. [[/?/init.lua';]] ..
+      [[export LUA_CPATH='./lua_modules/lib/lua/]] .. env.short_version .. [[/?.so;./lua_modules/lib/lua/]] .. env.short_version .. [[/loadall.so;./?.so;';]] ..
       table.concat(args, ' ')
     os.execute(cmd)
-  end,
+  end),
 
   version = function()
     print(lpm_version)
