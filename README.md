@@ -36,7 +36,7 @@ lpm run <script name> [arguments]
 ## Package Definition
 The package file (`package.lua`) includes the project name, Lua version, project scripts, and a list of Luarocks dependencies.
 
-```
+```lua
 name = 'cool-test-project'
 lua = '5.3.2'
 dependencies = {
