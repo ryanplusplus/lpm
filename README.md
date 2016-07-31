@@ -72,21 +72,32 @@ lpm v
 ```
 
 ## Package Definition
-The package file (`package.lua`) includes the project name, Lua version, project scripts, and a list of Luarocks dependencies.
+The package file (`package.lua`) includes a specification for your package and instructions for `lpm`:
 
 ```lua
+-- The package's name
 name = 'cool-test-project'
+
+-- Version of Lua installed via `lenv` during package installation
 lua = '5.3.2'
+
+-- LuaRocks modules required by the package during runtime
 dependencies = {
   'lua == 5.3',
-  'chain >= 1.0-1'
+  'chain == 1.0-1'
 }
+
+-- LuaRocks modules required for development of the package
+-- These are omitted when installed with `--production`
 dev_dependencies = {
   'mach >= 4.4-1',
   'busted >= 2.0.rc11-0'
 }
+
+-- Scripts that can be run with `lpm run`
 scripts = {
-  test = 'busted'
+  test = 'busted',
+  demo = [[lua -e "require 'src.test'(print)"]]
 }
 ```
 
