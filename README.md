@@ -1,5 +1,5 @@
 # lpm
-Fiddling around with Lua application management in an `npm` style. Goals are to (easily) maintain locally-scoped dependencies and automatically select the correct Lua version. Requires [`lenv`](https://github.com/mah0x211/lenv) to be installed and on the path.
+Lua application management in an `npm` style. Goals are to (easily) maintain locally-scoped dependencies and automatically select the correct Lua version. Requires [`lenv`](https://github.com/mah0x211/lenv) to be installed and on the path.
 
 ## Installation
 To install, copy `lpm`, `lpm.lua`, and `lpm-utils.lua` to your favorite folder and add that folder to your path.
@@ -12,11 +12,19 @@ Install the version of Lua, the dependencies, and the dev dependencies listed in
 lpm install [--production]
 ```
 
+```shell
+lpm i [--production]
+```
+
 ### clean
 Remove all installed dependencies by deleting `./lua_modules`.
 
 ```shell
 lpm clean
+```
+
+```shell
+lpm c
 ```
 
 ### exec
@@ -26,6 +34,10 @@ Execute commands in the project context.
 lpm exec <command> [arguments]
 ```
 
+```shell
+lpm e <command> [arguments]
+```
+
 ### run
 Run scripts defined in [`package.lua`](#package-definition) in project context.
 
@@ -33,11 +45,30 @@ Run scripts defined in [`package.lua`](#package-definition) in project context.
 lpm run <script name> [arguments]
 ```
 
+```shell
+lpm r <script name> [arguments]
+```
+
 ### test
-Alias for `lpm run test`
+Alias for `lpm run test`.
 
 ```shell
 lpm test
+```
+
+```shell
+lpm t
+```
+
+### version
+Show the version.
+
+```shell
+lpm version
+```
+
+```shell
+lpm v
 ```
 
 ## Package Definition
@@ -63,5 +94,5 @@ scripts = {
 Install and run automated tests for the sample project with:
 
 ```shell
-./lpm install; ./lpm run test
+./lpm i; ./lpm t
 ```
